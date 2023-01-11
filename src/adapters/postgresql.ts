@@ -1,4 +1,4 @@
-import pg from 'pg';
+import pg, { QueryResultRow } from 'pg';
 import { identify } from 'sql-query-identifier';
 
 import { buildDatabaseFilter, buildSchemaFilter } from '../filters';
@@ -660,6 +660,7 @@ export default class PostgresqlAdapter extends AbstractAdapter {
           }
 
           cancelable.cancel();
+          canceling = false;
         } catch (err) {
           canceling = false;
           throw err;
@@ -678,7 +679,7 @@ export default class PostgresqlAdapter extends AbstractAdapter {
       .map((result, idx) => parseRowQueryResult(result, commands[idx]));
   }
 
-  async driverExecuteSingleQuery<T>(
+  async driverExecuteSingleQuery<T extends QueryResultRow>(
     queryArgs: QueryArgs,
     connection?: pg.PoolClient,
   ): Promise<pg.QueryResult<T>> {

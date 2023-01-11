@@ -46,7 +46,10 @@ export interface TableKeysResult {
   referencedTable: string | null;
 }
 
-export type QueryReturn = { execute: () => Promise<QueryRowResult[]>; cancel: () => void };
+export type QueryReturn = {
+  execute: () => Promise<QueryRowResult[]>;
+  cancel: () => Promise<void> | void;
+};
 
 export abstract class AbstractAdapter {
   readonly server;
